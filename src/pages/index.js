@@ -11,9 +11,8 @@ export default function Home() {
           content="Nëse kërkoni zbritje në ushqime, veshje, elektronikë, ose çfarëdo tjetër, ne kujdesemi për ju..."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className>
+      <main>
         <header>
           <nav className="navbar navbar-default stacked-menu">
             <div className="container">
