@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+function Home({ categories }) {
   return (
     <>
       <Head>
@@ -29,16 +30,18 @@ export default function Home() {
                   <span className="icon-bar"></span>
                 </button>
               </div>
-              <a className="navbar-brand" href="index.html">
+              <Link href="" className="navbar-brand">
                 Fletushka Online
-              </a>
+              </Link>
               <div className="navbar-collapse collapse">
                 <ul className="nav navbar-nav">
-                  <li>
-                    <a href="about.html">
-                      <span>ABOUT</span>
-                    </a>
-                  </li>
+                  {categories?.data?.map((category) => (
+                    <li key={category?.id}>
+                      <Link href={category?.attributes.Slug}>
+                        {category?.attributes.Name}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -48,3 +51,22 @@ export default function Home() {
     </>
   );
 }
+
+export async function getStaticProps() {
+  const res = await fetch(
+    `${process.env.DATA}/categories?fields[0]=Slug&fields[1]=Name`
+  );
+  let categories = await res.json();
+
+  if (!categories?.data) {
+    categories = [];
+  }
+
+  return {
+    props: {
+      categories,
+    },
+  };
+}
+
+export default Home;

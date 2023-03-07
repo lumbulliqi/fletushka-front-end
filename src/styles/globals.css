@@ -1792,7 +1792,10 @@ table > tr > td {
 
 .stacked-menu .navbar-nav {
   float: none;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .stacked-menu .navbar-nav > li > a {
