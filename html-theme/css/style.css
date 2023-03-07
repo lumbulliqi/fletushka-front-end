@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------
 [Master Stylesheet]
 
-Project:	MINIFY - Minimal Portfolio Template
+Project:	Fletushka Online - Minimal Portfolio Template
 Version:	1.1
 Primary use:	Portfolio 
 -------------------------------------------------------------------*/
@@ -1486,7 +1486,7 @@ table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table
 }
 
 .navbar-nav {
-  padding-left: 15px;
+  /* padding-left: 15px; */
   padding-right: 0;
 }
 
