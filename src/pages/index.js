@@ -31,13 +31,18 @@ function Home({ categories }) {
                 </button>
               </div>
               <Link href="" className="navbar-brand">
-                Fletushka Online
+                <Image
+                  src="/logo.png"
+                  width={100}
+                  height={100}
+                  alt="Fletushka Online"
+                />
               </Link>
               <div className="navbar-collapse collapse">
                 <ul className="nav navbar-nav">
                   {categories?.data?.map((category) => (
                     <li key={category?.id}>
-                      <Link href={category?.attributes.Slug}>
+                      <Link href={`/kategoria/${category?.attributes.Slug}`}>
                         {category?.attributes.Name}
                       </Link>
                     </li>
