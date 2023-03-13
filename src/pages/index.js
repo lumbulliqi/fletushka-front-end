@@ -1,75 +1,95 @@
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper";
+import Layout from "@/components/Layout";
 
-function Home({ categories }) {
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+function Home({ categories, flyers }) {
   return (
     <>
-      <Head>
-        <title>Fletushka Online</title>
-        <meta
-          name="description"
-          content="Nëse kërkoni zbritje në ushqime, veshje, elektronikë, ose çfarëdo tjetër, ne kujdesemi për ju..."
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <main>
-        <header>
-          <nav className="navbar navbar-default stacked-menu">
-            <div className="container">
-              <div className="navbar-header">
-                <button
-                  type="button"
-                  className="navbar-toggle collapsed"
-                  data-toggle="collapse"
-                  data-target=".navbar-collapse"
+      <Layout categories={categories}>
+        <section id="portfolio" className="w-shadow info-box four-col">
+          <div className="container">
+            <ul className="row portfolio list-unstyled lightbox" id="grid">
+              {flyers?.data?.map((flyer) => (
+                <li
+                  key={flyer?.id}
+                  className="col-xs-6 col-md-3 project"
+                  data-groups='["all"]'
                 >
-                  <span className="sr-only">Toggle navigation</span>
-                  <span className="icon-bar"></span>
-                  <span className="icon-bar"></span>
-                  <span className="icon-bar"></span>
-                </button>
-              </div>
-              <Link href="" className="navbar-brand">
-                <Image
-                  src="/logo.png"
-                  width={100}
-                  height={100}
-                  alt="Fletushka Online"
-                />
-              </Link>
-              <div className="navbar-collapse collapse">
-                <ul className="nav navbar-nav">
-                  {categories?.data?.map((category) => (
-                    <li key={category?.id}>
-                      <Link href={`/kategoria/${category?.attributes.Slug}`}>
-                        {category?.attributes.Name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </header>
-      </main>
+                  <div className="img-bg-color primary">
+                    <Link
+                      href={`/fletushka/${flyer?.id}`}
+                      className="project-link"
+                    />
+                    <Swiper
+                      pagination={{
+                        type: "progressbar",
+                      }}
+                      grabCursor={false}
+                      navigation={true}
+                      modules={[Pagination, Navigation]}
+                      className="mySwiper"
+                    >
+                      {flyer?.attributes?.Images?.data?.map((image, index) => (
+                        <SwiperSlide key={index}>
+                          <Image
+                            unoptimized
+                            alt="Fletushka Online"
+                            width={100}
+                            height={100}
+                            src={`${process?.env?.IMAGE}${image?.attributes?.url}`}
+                          />
+                        </SwiperSlide>
+                      ))}
+                      <div className="swiper-pagination"></div>
+                    </Swiper>
+                    <div className="project-details">
+                      <h5 className="project-title">
+                        {flyer?.attributes?.store?.data?.attributes?.Name}
+                      </h5>
+                      <p className="skill">{`Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`}</p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </Layout>
     </>
   );
 }
 
 export async function getStaticProps() {
-  const res = await fetch(
-    `${process.env.DATA}/categories?fields[0]=Slug&fields[1]=Name`
+  // categories
+  const rescat = await fetch(
+    `${process?.env?.DATA}/categories?fields[0]=Slug&fields[1]=Name`
   );
-  let categories = await res.json();
+  let categories = await rescat.json();
 
   if (!categories?.data) {
     categories = [];
+  }
+  // flyers
+  const resflyer = await fetch(
+    `${process?.env?.DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name`
+  );
+  let flyers = await resflyer.json();
+
+  if (!flyers?.data) {
+    flyers = [];
   }
 
   return {
     props: {
       categories,
+      flyers,
     },
   };
 }

@@ -4,10 +4,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link
-          href="https://fonts.googleapis.com/css?family=Raleway:400,700,800,900"
-          rel="stylesheet"
+        <title>Fletushka Online</title>
+        <meta
+          name="description"
+          content="Nëse kërkoni zbritje në ushqime, veshje, elektronikë, ose çfarëdo tjetër, ne kujdesemi për ju..."
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <body>
         <Main />
