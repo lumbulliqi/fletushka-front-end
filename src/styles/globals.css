@@ -4059,6 +4059,7 @@ body.demo {
     bottom: 56%;
   }
 }
+
 @media only screen and (min-width: 768px) {
   .navbar-nav {
     float: right;
@@ -4085,12 +4086,14 @@ body.demo {
 .form-messege {
   margin-top: 20px;
 }
+
 @media only screen and (max-width: 767px) {
   .menu-hide {
     height: 0;
     opacity: 0;
   }
 }
+
 .navbar-brand > img {
   width: 100%;
   height: 100%;
@@ -4104,9 +4107,11 @@ a.navbar-brand {
 #portfolio .project .mySwiper {
   height: 300px;
 }
+
 #portfolio.single-flyer .project .mySwiper {
   height: 100%;
 }
+
 #portfolio .project .mySwiper img {
   height: 100%;
   width: 100%;
@@ -4127,10 +4132,15 @@ a.navbar-brand {
 #portfolio .swiper-button-next:after {
   font-size: 30px;
 }
+
 #portfolio .swiper-button-prev:after {
   font-size: 30px;
 }
 
 * {
   user-select: none;
+}
+
+body {
+  overflow-y: scroll;
 }

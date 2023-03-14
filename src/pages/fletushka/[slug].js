@@ -3,13 +3,33 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 import Layout from "@/components/Layout";
+import React from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-function Flyer({ categories, flyer }, props) {
+function Flyer({ flyer_page, categories, flyer }, props) {
+  const router = useRouter();
+  const [slide, setSlide] = useState(0);
+
+  // to continue on slide change change page parameter on current url too for sharing
+
+  function asd(index) {
+    // your code here
+    console.log("Slide changed!", router);
+    router.replace({
+      pathname: router.pathname,
+      query: {
+        slug: router.query.slug,
+        page: index,
+      },
+    });
+  }
+
   return (
     <>
       <Layout categories={categories}>
@@ -31,14 +51,13 @@ function Flyer({ categories, flyer }, props) {
                   <p className="skill">{`Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`}</p>
                 </div>
                 <div className="img-bg-color primary">
-                  <Link
-                    href={`/fletushka/${flyer?.attributes.Slug}`}
-                    className="project-link"
-                  />
+                  <Link href="#" className="project-link" />
                   <Swiper
+                    initialSlide={flyer_page}
                     pagination={{
                       type: "progressbar",
                     }}
+                    onSlideChange={(swiper) => asd(swiper.activeIndex)}
                     grabCursor={false}
                     navigation={true}
                     modules={[Pagination, Navigation]}
@@ -79,10 +98,11 @@ export async function getServerSideProps(context) {
   }
 
   const id = context.query.slug;
+  const flyer_page = context.query.page;
 
   // flyer
   const resflyer = await fetch(
-    `${process?.env?.DATA}/flyers/${id}?fields[0]=Slug&fields[1]=EndDate&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name`
+    `${process?.env?.DATA}/flyers/${id}?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
   );
   let flyer = await resflyer.json();
 
@@ -90,12 +110,11 @@ export async function getServerSideProps(context) {
     flyer = [];
   }
 
-  console.log("flyer id:", id);
-
   return {
     props: {
       categories,
       flyer: flyer?.data,
+      flyer_page: flyer_page,
     },
   };
 }

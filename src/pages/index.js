@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 import Layout from "@/components/Layout";
+import { useState } from "react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -10,6 +11,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 function Home({ categories, flyers }) {
+  const [slide, setSlide] = useState(0);
+
   return (
     <>
       <Layout categories={categories}>
@@ -24,31 +27,38 @@ function Home({ categories, flyers }) {
                 >
                   <div className="img-bg-color primary">
                     <Link
-                      href={`/fletushka/${flyer?.id}`}
+                      href={`/fletushka/${flyer?.id}?page=${slide}`}
                       className="project-link"
-                    />
-                    <Swiper
-                      pagination={{
-                        type: "progressbar",
-                      }}
-                      grabCursor={false}
-                      navigation={true}
-                      modules={[Pagination, Navigation]}
-                      className="mySwiper"
                     >
-                      {flyer?.attributes?.Images?.data?.map((image, index) => (
-                        <SwiperSlide key={index}>
-                          <Image
-                            unoptimized
-                            alt="Fletushka Online"
-                            width={100}
-                            height={100}
-                            src={`${process?.env?.IMAGE}${image?.attributes?.url}`}
-                          />
-                        </SwiperSlide>
-                      ))}
-                      <div className="swiper-pagination"></div>
-                    </Swiper>
+                      <Swiper
+                        pagination={{
+                          type: "progressbar",
+                        }}
+                        onSlideChange={(swiper) => {
+                          setSlide(swiper.activeIndex);
+                        }}
+                        grabCursor={false}
+                        navigation={true}
+                        modules={[Pagination, Navigation]}
+                        className="mySwiper"
+                      >
+                        {flyer?.attributes?.Images?.data?.map(
+                          (image, index) => (
+                            <SwiperSlide key={index}>
+                              <Image
+                                unoptimized
+                                alt="Fletushka Online"
+                                width={100}
+                                height={100}
+                                src={`${process?.env?.IMAGE}${image?.attributes?.url}`}
+                              />
+                            </SwiperSlide>
+                          )
+                        )}
+                        <div className="swiper-pagination"></div>
+                      </Swiper>
+                    </Link>
+
                     <div className="project-details">
                       <h5 className="project-title">
                         {flyer?.attributes?.store?.data?.attributes?.Name}
@@ -78,7 +88,7 @@ export async function getStaticProps() {
   }
   // flyers
   const resflyer = await fetch(
-    `${process?.env?.DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name`
+    `${process?.env?.DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
   );
   let flyers = await resflyer.json();
 
