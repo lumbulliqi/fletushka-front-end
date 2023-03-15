@@ -14,13 +14,9 @@ import "swiper/css/navigation";
 
 function Flyer({ flyer_page, categories, flyer }, props) {
   const router = useRouter();
-  const [slide, setSlide] = useState(0);
-
   // to continue on slide change change page parameter on current url too for sharing
 
-  function asd(index) {
-    // your code here
-    console.log("Slide changed!", router);
+  function slidePage(index) {
     router.replace({
       pathname: router.pathname,
       query: {
@@ -57,7 +53,7 @@ function Flyer({ flyer_page, categories, flyer }, props) {
                     pagination={{
                       type: "progressbar",
                     }}
-                    onSlideChange={(swiper) => asd(swiper.activeIndex)}
+                    onSlideChange={(swiper) => slidePage(swiper.activeIndex)}
                     grabCursor={false}
                     navigation={true}
                     modules={[Pagination, Navigation]}

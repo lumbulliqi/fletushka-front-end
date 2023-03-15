@@ -27,6 +27,7 @@ export default function Layout({categories, children}) {
             <Link href="/" className="navbar-brand">
               <Image
                 src="/logo.png"
+                priority
                 width={400}
                 height={100}
                 alt="Fletushka Online"
