@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Layout({categories, children}) {
+export default function Layout({ categories, children }) {
   const [menu, setMenu] = useState(false);
 
   return (
@@ -37,7 +37,9 @@ export default function Layout({categories, children}) {
               <ul className="nav navbar-nav">
                 {categories?.data?.map((category) => (
                   <li key={category?.id}>
-                    <Link href={`/kategoria/${category?.attributes.Slug}`}>
+                    <Link
+                      href={`/kategoria/${category?.id}/${category?.attributes.Slug}`}
+                    >
                       {category?.attributes.Name}
                     </Link>
                   </li>

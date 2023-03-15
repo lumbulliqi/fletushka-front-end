@@ -11,7 +11,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 function Home({ categories, flyers }) {
-  const [slide, setSlide] = useState(0);
+  const [slide, setSlide] = useState({});
 
   return (
     <>
@@ -22,12 +22,14 @@ function Home({ categories, flyers }) {
               {flyers?.data?.map((flyer) => (
                 <li
                   key={flyer?.id}
-                  className="col-xs-6 col-md-3 project"
+                  className="col-xs-12 col-sm-12 col-md-3 project"
                   data-groups='["all"]'
                 >
                   <div className="img-bg-color primary">
                     <Link
-                      href={`/fletushka/${flyer?.id}?page=${slide}`}
+                      href={`/fletushka/${flyer?.id}?page=${
+                        slide?.[flyer?.id] || 0
+                      }`}
                       className="project-link"
                     >
                       <Swiper
@@ -35,7 +37,10 @@ function Home({ categories, flyers }) {
                           type: "progressbar",
                         }}
                         onSlideChange={(swiper) => {
-                          setSlide(swiper.activeIndex);
+                          setSlide({
+                            ...slide,
+                            [flyer?.id]: swiper?.activeIndex,
+                          });
                         }}
                         grabCursor={false}
                         navigation={true}
@@ -46,13 +51,12 @@ function Home({ categories, flyers }) {
                           (image, index) => (
                             <SwiperSlide key={index}>
                               <Image
-                                unoptimized
                                 alt="Fletushka Online"
-                                width={100}
-                                height={100}
-                                src={`${process?.env?.IMAGE}${image?.attributes?.url}`}
+                                width={200}
+                                height={200}
+                                src={`${process?.env?.NEXT_PUBLIC_IMAGE}${image?.attributes?.url}`}
                               />
-                            </SwiperSlide>
+                            </SwiperSlide> 
                           )
                         )}
                         <div className="swiper-pagination"></div>
@@ -63,7 +67,11 @@ function Home({ categories, flyers }) {
                       <h5 className="project-title">
                         {flyer?.attributes?.store?.data?.attributes?.Name}
                       </h5>
-                      <p className="skill">{`Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`}</p>
+                      <p className="skill">
+                        {flyer?.attributes?.flyerDate >= 0
+                          ? `Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`
+                          : "Nuk vlenë më"}
+                      </p>
                     </div>
                   </div>
                 </li>
@@ -77,9 +85,12 @@ function Home({ categories, flyers }) {
 }
 
 export async function getStaticProps() {
+
+  
+
   // categories
   const rescat = await fetch(
-    `${process?.env?.DATA}/categories?fields[0]=Slug&fields[1]=Name`
+    `${process?.env?.NEXT_PUBLIC_DATA}/categories?fields[0]=Slug&fields[1]=Name`
   );
   let categories = await rescat.json();
 
@@ -88,7 +99,7 @@ export async function getStaticProps() {
   }
   // flyers
   const resflyer = await fetch(
-    `${process?.env?.DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
+    `${process?.env?.NEXT_PUBLIC_DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
   );
   let flyers = await resflyer.json();
 
@@ -101,6 +112,7 @@ export async function getStaticProps() {
       categories,
       flyers,
     },
+    revalidate: parseInt(process?.env?.NEXT_PUBLIC_UPDATE_TIME),
   };
 }
 

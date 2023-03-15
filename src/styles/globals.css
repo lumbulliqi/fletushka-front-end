@@ -1933,6 +1933,8 @@ table > tr > td {
 
 #portfolio ul.portfolio {
   margin-bottom: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .portfolio-filter {
@@ -2179,8 +2181,9 @@ table > tr > td {
 }
 
 #portfolio.info-box .project-details p {
-  color: #666666;
+  color: #7dd956;
   margin-bottom: 0;
+  font-weight: bold;
 }
 
 #portfolio.info-box .project-hover-tools {
@@ -4138,7 +4141,7 @@ a.navbar-brand {
 }
 
 * {
-  user-select: none;
+  /* user-select: none; */
 }
 
 body {
