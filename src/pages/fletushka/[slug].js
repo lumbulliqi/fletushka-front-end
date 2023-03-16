@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 import Layout from "@/components/Layout";
 import React from "react";
-import { useState } from "react";
 import { useRouter } from "next/router";
 
 // Import Swiper styles
@@ -14,13 +13,12 @@ import "swiper/css/navigation";
 
 function Flyer({ flyer_page, categories, flyer }, props) {
   const router = useRouter();
-  // to continue on slide change change page parameter on current url too for sharing
 
   function slidePage(index) {
     router.replace({
-      pathname: router.pathname,
+      pathname: router?.pathname,
       query: {
-        slug: router.query.slug,
+        slug: router?.query?.slug,
         page: index,
       },
     });
@@ -43,7 +41,11 @@ function Flyer({ flyer_page, categories, flyer }, props) {
                 <h5 className="project-title">
                   {flyer?.attributes?.store?.data?.attributes?.Name}
                 </h5>
-                <p className="skill">{`Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`}</p>
+                <p className="skill">
+                  {flyer?.attributes?.flyerDate >= 0
+                    ? `Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`
+                    : "Nuk vlenë më"}
+                </p>
               </div>
               <div className="img-bg-color primary">
                 <Link href="#" className="project-link" />
@@ -83,35 +85,42 @@ function Flyer({ flyer_page, categories, flyer }, props) {
 }
 
 export async function getServerSideProps(context) {
-  // categories
-  const rescat = await fetch(
-    `${process?.env?.NEXT_PUBLIC_DATA}/categories?fields[0]=Slug&fields[1]=Name`
-  );
-  let categories = await rescat.json();
+  let categories = [];
+  let flyer = null;
 
-  if (!categories?.data) {
-    categories = [];
-  }
+  const id = context?.query.slug || 0;
+  const flyer_page = context?.query?.page || 0;
+  try {
+    // categories
+    const rescat = await fetch(
+      `${process?.env?.NEXT_PUBLIC_DATA}/categories?fields[0]=Slug&fields[1]=Name`
+    );
+    categories = await rescat.json();
 
-  const id = context.query.slug;
-  const flyer_page = context.query.page;
+    if (!categories?.data) {
+      categories = [];
+    }
 
-  // flyer
-  const resflyer = await fetch(
-    `${process?.env?.NEXT_PUBLIC_DATA}/flyers/${id}?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
-  );
-  let flyer = await resflyer.json();
+    // flyer
+    const resflyer = await fetch(
+      `${process?.env?.NEXT_PUBLIC_DATA}/flyers/${id}?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
+    );
+    flyer = await resflyer.json();
 
-  if (!flyer?.data) {
-    flyer = [];
+    if (!flyer?.data) {
+      flyer = null;
+    }
+  } catch (error) {
+    console.log("error", error);
   }
 
   return {
     props: {
       categories,
-      flyer: flyer?.data,
+      flyer: flyer?.data || null,
       flyer_page: flyer_page,
     },
+    notFound: !categories?.length || !flyer?.data || !flyer_page ? true : false,
   };
 }
 

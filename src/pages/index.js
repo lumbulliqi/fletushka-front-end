@@ -56,7 +56,7 @@ function Home({ categories, flyers }) {
                                 height={200}
                                 src={`${process?.env?.NEXT_PUBLIC_IMAGE}${image?.attributes?.url}`}
                               />
-                            </SwiperSlide> 
+                            </SwiperSlide>
                           )
                         )}
                         <div className="swiper-pagination"></div>
@@ -85,33 +85,37 @@ function Home({ categories, flyers }) {
 }
 
 export async function getStaticProps() {
+  let categories = [];
+  let flyers = [];
+  try {
+    // categories
+    const rescat = await fetch(
+      `${process?.env?.NEXT_PUBLIC_DATA}/categories?fields[0]=Slug&fields[1]=Name`
+    );
+    categories = await rescat.json();
 
-  
+    if (!categories?.data) {
+      categories = [];
+    }
 
-  // categories
-  const rescat = await fetch(
-    `${process?.env?.NEXT_PUBLIC_DATA}/categories?fields[0]=Slug&fields[1]=Name`
-  );
-  let categories = await rescat.json();
+    // flyers
+    const resflyer = await fetch(
+      `${process?.env?.NEXT_PUBLIC_DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
+    );
+    flyers = await resflyer.json();
 
-  if (!categories?.data) {
-    categories = [];
+    if (!flyers?.data) {
+      flyers = [];
+    }
+  } catch (error) {
+    console.log("error", error);
   }
-  // flyers
-  const resflyer = await fetch(
-    `${process?.env?.NEXT_PUBLIC_DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
-  );
-  let flyers = await resflyer.json();
-
-  if (!flyers?.data) {
-    flyers = [];
-  }
-
   return {
     props: {
       categories,
       flyers,
     },
+    notFound: !categories?.length || !flyers?.length ? true : false,
     revalidate: parseInt(process?.env?.NEXT_PUBLIC_UPDATE_TIME),
   };
 }

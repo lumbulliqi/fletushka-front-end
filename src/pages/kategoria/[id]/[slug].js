@@ -9,6 +9,7 @@ import { useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import Error from "next/error";
 
 function Category({ category, categories }, props) {
   const [slide, setSlide] = useState({});
@@ -83,26 +84,30 @@ function Category({ category, categories }, props) {
 }
 
 export async function getServerSideProps(context) {
-  // categories
-  const rescats = await fetch(
-    `${process?.env?.NEXT_PUBLIC_DATA}/categories?fields[0]=Slug&fields[1]=Name`
-  );
-  let categories = await rescats.json();
+  let categories = [];
+  let category = null;
+  try {
+    // categories
+    const rescats = await fetch(
+      `${process?.env?.NEXT_PUBLIC_DATA}/categories?fields[0]=Slug&fields[1]=Name`
+    );
+    let categories = await rescats.json();
 
-  if (!categories?.data) {
-    categories = [];
-  }
+    if (!categories?.data) {
+      categories = [];
+    }
+    // category
+    const slug = context.query.id;
+    const rescat = await fetch(
+      `${process?.env?.NEXT_PUBLIC_DATA}/categories/${slug}`
+    );
+    let category = await rescat.json();
 
-  // category
-  const slug = context.query.id;
-
-  const rescat = await fetch(
-    `${process?.env?.NEXT_PUBLIC_DATA}/categories/${slug}`
-  );
-  let category = await rescat.json();
-
-  if (!category) {
-    category = [];
+    if (!category) {
+      category = null;
+    }
+  } catch (error) {
+    console.log("error", error);
   }
 
   return {
@@ -110,6 +115,7 @@ export async function getServerSideProps(context) {
       category,
       categories,
     },
+    notFound: !categories?.length || !category ? true : false,
   };
 }
 

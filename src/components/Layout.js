@@ -4,7 +4,6 @@ import Link from "next/link";
 
 export default function Layout({ categories, children }) {
   const [menu, setMenu] = useState(false);
-
   return (
     <main>
       <header>
@@ -38,9 +37,9 @@ export default function Layout({ categories, children }) {
                 {categories?.data?.map((category) => (
                   <li key={category?.id}>
                     <Link
-                      href={`/kategoria/${category?.id}/${category?.attributes.Slug}`}
+                      href={`/kategoria/${category?.id}/${category?.attributes?.Slug}`}
                     >
-                      {category?.attributes.Name}
+                      {category?.attributes?.Name}
                     </Link>
                   </li>
                 ))}
