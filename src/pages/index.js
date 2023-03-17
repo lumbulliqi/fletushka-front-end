@@ -100,7 +100,7 @@ export async function getStaticProps() {
 
     // flyers
     const resflyer = await fetch(
-      `${process?.env?.NEXT_PUBLIC_DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&filters[Valid][$eq]=true`
+      `${process?.env?.NEXT_PUBLIC_DATA}/flyers?fields[0]=Slug&fields[1]=EndDate&fields[2]=Valid&populate[Images][fields][0]=url&populate[Images][url][fields][1]=url&populate[store][fields][1]=Name&populate[categories][fields][0]=Slug&filters[Valid][$eq]=true`
     );
     flyers = await resflyer.json();
 
@@ -115,7 +115,6 @@ export async function getStaticProps() {
       categories,
       flyers,
     },
-    notFound: !categories?.length || !flyers?.length ? true : false,
     revalidate: parseInt(process?.env?.NEXT_PUBLIC_UPDATE_TIME),
   };
 }

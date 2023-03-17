@@ -120,7 +120,6 @@ export async function getServerSideProps(context) {
       flyer: flyer?.data || null,
       flyer_page: flyer_page,
     },
-    notFound: !categories?.length || !flyer?.data || !flyer_page ? true : false,
   };
 }
 
