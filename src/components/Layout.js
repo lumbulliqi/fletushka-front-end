@@ -43,6 +43,16 @@ export default function Layout({ categories, children }) {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link href={`/dyqanet`}>
+                    <span className="stores">Dyqanet</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/profili`}>
+                    <span className="profile">Profili</span>
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

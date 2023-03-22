@@ -2956,6 +2956,7 @@ table > tr > td {
 
 #contact-form .form-group {
   margin-bottom: 0;
+  position: relative;
 }
 
 #contact-form #contactForm {
@@ -4146,4 +4147,42 @@ a.navbar-brand {
 
 body {
   overflow-y: scroll;
+}
+
+.form-control:focus {
+  border-color: rgb(125 217 86);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(125, 217, 86, 0.6);
+}
+
+form#contact-form {
+  max-width: 50%;
+  margin: auto;
+  display: grid;
+  gap: 10px;
+}
+
+@media only screen and (max-width: 767px) {
+  form#contact-form {
+    max-width: 100%;
+    margin: auto;
+  }
+}
+
+.help-block {
+  color: red;
+  padding: 0px 20px;
+  margin: 0;
+}
+
+.form-control {
+  margin: 0;
+}
+
+.profile {
+  border-bottom: 1px solid #7dd956;
+}
+
+.stores {
+  border-bottom: 1px solid #00B3FF;
 }
