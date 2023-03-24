@@ -34,16 +34,22 @@ function LoginComponent({ categories }, props) {
       try {
         const usertemp = { ...userData };
 
-        const asd = await fetch("/api/login", {
+        let res = await fetch("/api/login", {
           method: "POST",
           body: JSON.stringify(usertemp),
         });
 
-        const data = await asd;
+        res = await res.json();
 
-        console.log("response page", await data.json());
+        console.log("res", res);
 
-        router.replace("/profili");
+        if (res?.jwt) {
+          router.replace("/profili");
+        } else {
+          setErrorMessage({
+            invalidUser: "Adresa ose fjalëkalimi i pavlefshëm",
+          });
+        }
       } catch (err) {
         console.log(err);
       }
@@ -98,6 +104,9 @@ function LoginComponent({ categories }, props) {
                       KYÇU
                     </button>
                     <div id="msgSubmit" className="h3 text-center hidden"></div>
+                    <div className="help-block with-errors">
+                      {errorMessage.invalidUser}
+                    </div>
                     <p className="form-messege"></p>
                     <div className="clearfix"></div>
                     <p>

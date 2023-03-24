@@ -41,13 +41,18 @@ function Flyer({ flyer_page, categories, flyer }, props) {
                 <h5 className="project-title">
                   {flyer?.attributes?.store?.data?.attributes?.Name}
                 </h5>
-                <p className="skill">
-                  {flyer?.attributes?.flyerDate >= 0
-                    ? `Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`
-                    : "Nuk vlenë më"}
-                </p>
+
+                {flyer?.attributes?.flyerDate >= 0 ? (
+                  <p className="skill">
+                    {flyer?.attributes?.Valid == true
+                      ? `Vlenë edhe ${flyer?.attributes?.flyerDate} ditë`
+                      : null}
+                  </p>
+                ) : null}
               </div>
-              <div className="img-bg-color primary">
+              <div
+                className={`img-bg-color primary ${flyer?.attributes?.Valid}`}
+              >
                 <Link href="#" className="project-link" />
                 <Swiper
                   initialSlide={flyer_page}
@@ -120,6 +125,7 @@ export async function getServerSideProps(context) {
       flyer: flyer?.data || null,
       flyer_page: flyer_page,
     },
+    notFound: !flyer?.data?.id ? true : false,
   };
 }
 

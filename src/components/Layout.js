@@ -8,7 +8,7 @@ export default function Layout({ categories, children }) {
     <main>
       <header>
         <nav className="navbar navbar-default stacked-menu">
-          <div className="container">
+          <div className="container-fluid">
             <div className="navbar-header">
               <button
                 type="button"

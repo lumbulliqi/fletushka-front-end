@@ -21,7 +21,7 @@ export default async (req, res) => {
       path: "/",
     });
 
-    res.status(200).end();
+    res.status(200).json(response);
   } catch (e) {
     console.log("e", e);
     res.status(400).send(e?.response?.data?.message[0].messages[0]);

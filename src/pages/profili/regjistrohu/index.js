@@ -41,14 +41,23 @@ function RegisterComponent({ categories }, props) {
       try {
         const usertemp = { ...userData, username: userData.email };
 
-        await fetch("/api/register", {
+        let res = await fetch("/api/register", {
           method: "POST",
           body: JSON.stringify(usertemp),
         });
 
-        router.replace("/profili");
+        res = await res.json();
+
+        console.log("res", res);
+        if (res?.jwt) {
+          router.replace("/profili");
+        } else {
+          setErrorMessage({
+            invalidUser: "Adresa elektronike e pavlefshme, provoni një tjetër",
+          });
+        }
       } catch (err) {
-        console.log(err.response.data);
+        console.log(err);
       }
     }
   };
@@ -114,6 +123,9 @@ function RegisterComponent({ categories }, props) {
                       REGJISTROHU
                     </button>
                     <div id="msgSubmit" className="h3 text-center hidden"></div>
+                    <div className="help-block with-errors">
+                      {errorMessage.invalidUser}
+                    </div>
                     <p className="form-messege"></p>
                     <div className="clearfix"></div>
                     <p>
