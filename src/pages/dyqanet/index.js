@@ -15,7 +15,7 @@ function Stores({ categories, stores }, props) {
                 stores?.map((store) => (
                   <li
                     key={store?.id}
-                    className="col-xs-12 col-sm-12 col-md-3 project"
+                    className="col-xs-6 col-sm-6 col-md-3 project"
                     data-groups='["all"]'
                   >
                     <div className="img-bg-color primary">

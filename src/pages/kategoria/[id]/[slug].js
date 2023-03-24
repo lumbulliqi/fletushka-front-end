@@ -27,7 +27,7 @@ function Category({ category, categories }, props) {
                 category?.flyers?.map((flyer) => (
                   <li
                     key={flyer?.id}
-                    className="col-xs-12 col-sm-12 col-md-3 project"
+                    className="col-xs-6 col-sm-6 col-md-3 project"
                     data-groups='["all"]'
                   >
                     <div className="img-bg-color primary">

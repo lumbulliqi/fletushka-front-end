@@ -27,25 +27,26 @@ function Store({ store, categories }, props) {
                   <p>{store?.Description}</p>
 
                   <div className="info-buttons">
+                    <h6>Kontakto {store?.Name}</h6>
                     <Link
                       href={`https://${store?.Website}`}
                       passHref
                       target={"_blank"}
                       className="btn btn-primary-filled"
                     >
-                      <span>{store?.Website}</span>
+                      <span>Faqja</span>
                     </Link>
                     <Link
-                      href={`tel:${store?.PhoneNumber}`}
+                      href={`tel:+${store?.PhoneNumber}`}
                       className="btn btn-primary-filled"
                     >
-                      <span>{store?.PhoneNumber}</span>
+                      <span>Numri i telefonit</span>
                     </Link>
                     <Link
                       href={`mailto:${store?.Email}`}
                       className="btn btn-primary-filled"
                     >
-                      <span>{store?.Email}</span>
+                      <span>Adresa elektronike</span>
                     </Link>
                   </div>
                 </div>

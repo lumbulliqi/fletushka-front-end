@@ -27,7 +27,7 @@ function Home({ categories, flyers }) {
                 flyers?.map((flyer) => (
                   <li
                     key={flyer?.id}
-                    className="col-xs-12 col-sm-12 col-md-3 project"
+                    className="col-xs-6 col-sm-6 col-md-3 project"
                     data-groups='["all"]'
                   >
                     <div className="img-bg-color primary">
@@ -71,7 +71,7 @@ function Home({ categories, flyers }) {
                       <div className="project-details">
                         <h5 className="project-title">
                           <Link
-                            href={`/dyqanet/${flyer?.attributes?.store?.data?.attributes?.id}/${flyer?.attributes?.store?.data?.attributes?.Slug}`}
+                            href={`/dyqanet/${flyer?.attributes?.store?.data?.id}/${flyer?.attributes?.store?.data?.attributes?.Slug}`}
                           >
                             {flyer?.attributes?.store?.data?.attributes?.Name}
                           </Link>
