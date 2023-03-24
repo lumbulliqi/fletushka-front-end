@@ -116,6 +116,9 @@ export async function getStaticProps() {
     if (!flyers?.data) {
       flyers = [];
     }
+
+
+    console.log("categories", categories)
   } catch (error) {
     console.log("error", error);
   }
