@@ -24,14 +24,13 @@ function Profile({ categories, user }) {
         <section id="portfolio" className="w-shadow info-box four-col">
           <div className="container">
             <div>
-              <div>Username: {username}</div>
-              <div>Email: {email}</div>
+              <div>Adresa elektronike: {email}</div>
               <button
                 onClick={logout}
                 type="submit"
                 className="btn btn-md btn-primary-filled"
               >
-                REGJISTROHU
+                Dalje
               </button>
             </div>
           </div>
