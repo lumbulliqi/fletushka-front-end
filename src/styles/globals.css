@@ -4094,6 +4094,7 @@ body.demo {
   .menu-hide {
     height: 0;
     opacity: 0;
+    visibility: hidden;
   }
 }
 
