@@ -21,13 +21,18 @@ function Profile({ categories, user }) {
   return (
     <>
       <Layout categories={categories}>
-        Profile
         <section id="portfolio" className="w-shadow info-box four-col">
           <div className="container">
             <div>
               <div>Username: {username}</div>
               <div>Email: {email}</div>
-              <button onClick={logout}>Logout</button>
+              <button
+                onClick={logout}
+                type="submit"
+                className="btn btn-md btn-primary-filled"
+              >
+                REGJISTROHU
+              </button>
             </div>
           </div>
         </section>
