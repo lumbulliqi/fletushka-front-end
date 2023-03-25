@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     domains: [process?.env?.NEXT_PUBLIC_HOSTNAME],
     // unoptimized: true
-    path: [process?.env?.NEXT_PUBLIC_HOSTNAME]
+    path: process?.env?.NEXT_PUBLIC_HOSTNAME
   }
 };
 
