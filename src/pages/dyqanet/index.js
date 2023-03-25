@@ -15,13 +15,13 @@ function Stores({ categories, stores }, props) {
                 stores?.map((store) => (
                   <li
                     key={store?.id}
-                    className="col-xs-6 col-sm-6 col-md-3 project"
+                    className="col-xs-12 col-sm-12 col-md-3 project"
                     data-groups='["all"]'
                   >
                     <div className="img-bg-color primary">
                       <Link
                         href={`/dyqanet/${store?.id}/${store?.attributes?.Slug}`}
-                        className="project-link"
+                        className="project-link stores-wrapper"
                       >
                         <Image
                           alt={`Fletushka Online | ${store?.Name}`}
